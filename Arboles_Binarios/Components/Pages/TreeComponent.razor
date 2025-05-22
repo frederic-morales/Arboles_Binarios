@@ -1,0 +1,36 @@
+﻿@rendermode InteractiveServer
+@using Arboles_Binarios.models
+@using Arboles_Binarios.services
+
+<div class="container mt-5">
+    @if (Arbol.Raiz != null)
+    {
+        <TreeNode Nodo="Arbol.Raiz" />
+    }
+    else
+    {
+        <p class="text-muted text-center">El árbol está vacío</p>
+    }
+
+    <div class="mt-4 text-center">
+        <input class="form-control mb-2" type="text" @bind="Informacion.Nombre" placeholder="Nombre" />
+        <input class="form-control mb-2" type="text" @bind="Informacion.Apellido" placeholder="Apellido" />
+        <input class="form-control mb-2" type="text" @bind="Informacion.Telefono" placeholder="Teléfono" />
+        <input class="form-control mb-2" type="number" @bind="Informacion.Edad" placeholder="Edad" />
+        <button class="btn btn-success" @onclick="Agregar">Agregar</button>
+    </div>
+
+</div>
+
+@code {
+
+    private ArbolBinario Arbol = new();
+    private InformacionNodo Informacion = new();
+
+    private void Agregar()
+    {
+        Arbol.Insertar(Informacion);
+        Informacion = new(); 
+    }
+
+}

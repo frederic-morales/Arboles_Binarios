@@ -1,0 +1,57 @@
+﻿@using Arboles_Binarios.models
+@rendermode InteractiveServer
+@inherits LayoutComponentBase
+
+<style>
+    .node {
+        width: 75px;
+        height: 75px;
+        font-size: 10px;
+        font-weight: bold;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .node-placeholder {
+        width: 60px;
+        height: 50px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+</style>
+
+
+<div class="d-flex flex-column align-items-center">
+    <div class="node bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-2">
+            @Nodo.Informacion.Edad
+            @Nodo.Informacion.Nombre
+            @Nodo.Informacion.Apellido
+    </div>
+
+    @if (Nodo.Izquierda != null || Nodo.Derecha != null)
+    {
+        <div class="d-flex justify-content-around w-100">
+            @if (Nodo.Izquierda != null)
+            {
+                <TreeNode Nodo="Nodo.Izquierda" />
+            }
+            else
+            {
+                <div class="node-placeholder"></div>
+            }
+            @if (Nodo.Derecha != null)
+            {
+                <TreeNode Nodo="Nodo.Derecha" />
+            }
+            else
+            {
+                <div class="node-placeholder"></div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public NodoArbol Nodo { get; set; }
+}
