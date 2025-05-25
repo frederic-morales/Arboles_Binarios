@@ -3,30 +3,63 @@
 @using Arboles_Binarios.models
 @using Arboles_Binarios.services
 
-<div class="container mt-2">
+<div class="container mt-2 mb-5">
     <h2 class="text-center fw-bold">Árboles Binarios</h2>
+
     <button class="btn btn-primary mb-3" @onclick="CrearNuevoArbol">Crear nuevo árbol</button>
 
-    @foreach (var arbol in ArbolesMostrados)
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <label>Seleccionar árbol 1:</label>
+            <select class="form-select" @bind="ArbolId1">
+                <option value="">-- Selecciona un árbol --</option>
+                @foreach (var arbol in TodosLosArboles)
+                {
+                    <option value="@arbol.Id">@arbol.Id</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label>Seleccionar árbol 2:</label>
+            <select class="form-select" @bind="ArbolId2">
+                <option value="">-- Selecciona un árbol --</option>
+                @foreach (var arbol in TodosLosArboles)
+                {
+                    <option value="@arbol.Id">@arbol.Id</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    @if (ArbolSeleccionado1 != null)
     {
-        <div class="border p-3">
-            <h6 class="text-muted">Árbol ID: @arbol.Id</h6>
-            <TreeComponent Arbol="arbol" />
+        <div class="border p-3 mb-4 text-center">
+            <h4 class="text-muted">Árbol @ArbolSeleccionado1.Id</h4>
+            <TreeComponent Arbol="ArbolSeleccionado1" />
         </div>
     }
 
+    @if (ArbolSeleccionado2 != null)
+    {
+        <div class="border p-3 text-center">
+            <h4 class="text-muted">Árbol @ArbolSeleccionado2.Id</h4>
+            <TreeComponent Arbol="ArbolSeleccionado2" />
+        </div>
+    }
 </div>
 
 @code{
     private List<ArbolBinario> TodosLosArboles = new();
-    private List<ArbolBinario> ArbolesMostrados = new();
+
+    private int? ArbolId1;
+    private int? ArbolId2;
+
+    private ArbolBinario ArbolSeleccionado1 => TodosLosArboles.FirstOrDefault(a => a.Id == ArbolId1);
+    private ArbolBinario ArbolSeleccionado2 => TodosLosArboles.FirstOrDefault(a => a.Id == ArbolId2);
 
     private void CrearNuevoArbol()
     {
         var nuevo = new ArbolBinario();
         TodosLosArboles.Add(nuevo);
-
-        // Mostrar los 2 más recientes
-        ArbolesMostrados = TodosLosArboles.TakeLast(2).ToList();
     }
 }

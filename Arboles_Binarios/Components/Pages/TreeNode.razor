@@ -4,11 +4,10 @@
 
 <style>
     .node {
-        width: 75px;
-        height: 75px;
-        font-size: 10px;
+        width: 85px;
+        height: 85px;
+        font-size: 12px;
         font-weight: bold;
-        font-size: 1rem;
         text-align: center;
     }
 
@@ -21,11 +20,11 @@
 </style>
 
 
-<div class="d-flex flex-column align-items-center">
+<div class="d-flex flex-column align-items-center gap-3">
     <div class="node bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-2">
             @Nodo.Informacion.Edad
-            @Nodo.Informacion.Nombre
-            @Nodo.Informacion.Apellido
+           <br /> @Nodo.Informacion.Nombre
+           <br /> @Nodo.Informacion.Apellido
     </div>
 
     @if (Nodo.Izquierda != null || Nodo.Derecha != null)

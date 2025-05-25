@@ -17,7 +17,15 @@
         <input class="form-control mb-2" type="text" @bind="Informacion.Apellido" placeholder="Apellido" />
         <input class="form-control mb-2" type="text" @bind="Informacion.Telefono" placeholder="Teléfono" />
         <input class="form-control mb-2" type="number" @bind="Informacion.Edad" placeholder="Edad" />
-        <button class="btn btn-success" @onclick="Agregar">Agregar</button>
+        <button class="btn btn-success me-2" @onclick="Agregar">Agregar</button>
+        <button class="btn btn-danger me-3" @onclick="Eliminar">Eliminar Por Edad</button>
+        <button class="btn btn-primary me-3" @onclick="Buscar">Buscar</button>
+        @if (nodoEncontrado != null)
+        {
+            <div class="alert alert-info mt-3">
+                <strong>Resultado de búsqueda:</strong> @nodoEncontrado.Informacion.Nombre @nodoEncontrado.Informacion.Apellido, edad: @nodoEncontrado.Informacion.Edad, tel: @nodoEncontrado.Informacion.Telefono  
+            </div>
+        }
     </div>
 
 </div>
@@ -28,6 +36,7 @@
     public ArbolBinario Arbol { get; set; }
 
     private InformacionNodo Informacion = new();
+    private NodoArbol nodoEncontrado = null;
 
     private void Agregar()
     {
@@ -35,4 +44,13 @@
         Informacion = new(); // Limpia formulario
     }
 
+    private void Eliminar()
+    {
+        Arbol?.Eliminar(Informacion.Edad);
+    }
+
+    private void Buscar()
+    {
+        nodoEncontrado = Arbol.Buscar(Informacion.Edad);
+    }
 }
