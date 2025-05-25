@@ -1,12 +1,32 @@
 ﻿@page "/"
 @rendermode InteractiveServer
+@using Arboles_Binarios.models
+@using Arboles_Binarios.services
 
 <div class="container mt-2">
     <h2 class="text-center fw-bold">Árboles Binarios</h2>
-    
-    <TreeComponent></TreeComponent>
-    <TreeComponent></TreeComponent>
-    <TreeComponent></TreeComponent>
+    <button class="btn btn-primary mb-3" @onclick="CrearNuevoArbol">Crear nuevo árbol</button>
 
+    @foreach (var arbol in ArbolesMostrados)
+    {
+        <div class="border p-3">
+            <h6 class="text-muted">Árbol ID: @arbol.Id</h6>
+            <TreeComponent Arbol="arbol" />
+        </div>
+    }
 
 </div>
+
+@code{
+    private List<ArbolBinario> TodosLosArboles = new();
+    private List<ArbolBinario> ArbolesMostrados = new();
+
+    private void CrearNuevoArbol()
+    {
+        var nuevo = new ArbolBinario();
+        TodosLosArboles.Add(nuevo);
+
+        // Mostrar los 2 más recientes
+        ArbolesMostrados = TodosLosArboles.TakeLast(2).ToList();
+    }
+}

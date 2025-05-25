@@ -24,13 +24,15 @@
 
 @code {
 
-    private ArbolBinario Arbol = new();
+    [Parameter]
+    public ArbolBinario Arbol { get; set; }
+
     private InformacionNodo Informacion = new();
 
     private void Agregar()
     {
-        Arbol.Insertar(Informacion);
-        Informacion = new(); 
+        Arbol?.Insertar(Informacion);
+        Informacion = new(); // Limpia formulario
     }
 
 }

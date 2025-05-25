@@ -4,8 +4,8 @@ namespace Arboles_Binarios.services
 {
     public class ArbolBinario
     {
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public NodoArbol Raiz { get; private set; }
-
 
         public void Insertar(InformacionNodo informacion)
         {
