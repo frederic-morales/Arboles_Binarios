@@ -262,5 +262,45 @@ namespace Arboles_Binarios.services
             IntercambiarRecursivo(nodo.Derecha);
         }
 
+
+        //---------------------
+        // METODOS DE SALIDAñ
+        //---------------------
+
+
+        //Comparar si los arboles son similares
+        public static bool SonSimilares(NodoArbol nodo1, NodoArbol nodo2)
+        {
+            if (nodo1 == null && nodo2 == null) return true;
+            if (nodo1 == null || nodo2 == null) return false;
+
+            return SonSimilares(nodo1.Izquierda, nodo2.Izquierda) &&
+                   SonSimilares(nodo1.Derecha, nodo2.Derecha);
+        }
+
+
+        //Comparar si los arboles son equivalentes
+        public static bool SonEquivalentes(NodoArbol nodo1, NodoArbol nodo2)
+        {
+            if (nodo1 == null && nodo2 == null) return true;
+            if (nodo1 == null || nodo2 == null) return false;
+
+            bool mismaInfo = nodo1.Informacion.Edad == nodo2.Informacion.Edad &&
+                             nodo1.Informacion.Nombre == nodo2.Informacion.Nombre &&
+                             nodo1.Informacion.Apellido == nodo2.Informacion.Apellido &&
+                             nodo1.Informacion.Telefono == nodo2.Informacion.Telefono;
+
+            return mismaInfo &&
+                   SonEquivalentes(nodo1.Izquierda, nodo2.Izquierda) &&
+                   SonEquivalentes(nodo1.Derecha, nodo2.Derecha);
+        }
+
+
+        //Comparar si son distintos
+        public static bool SonDistintos(NodoArbol nodo1, NodoArbol nodo2)
+        {
+            return !SonSimilares(nodo1, nodo2) && !SonEquivalentes(nodo1, nodo2);
+        }
+
     }
 }

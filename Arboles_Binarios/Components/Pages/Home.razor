@@ -8,6 +8,22 @@
 
     <button class="btn btn-primary mb-3" @onclick="CrearNuevoArbol">Crear nuevo árbol</button>
 
+    @if (ArbolSeleccionado1 != null && ArbolSeleccionado2 != null)
+    {
+        <div class="text-center mt-4">
+            <button class="btn btn-info me-2" @onclick="CompararSimilares">¿Son similares?</button>
+            <button class="btn btn-info me-2" @onclick="CompararEquivalentes">¿Son equivalentes?</button>
+            <button class="btn btn-info me-2" @onclick="CompararDistintos">¿Son distintos?</button>
+        </div>
+
+        @if (!string.IsNullOrEmpty(resultadoComparacion))
+        {
+            <div class="alert alert-secondary mt-3 text-center">
+                <strong>@resultadoComparacion</strong>
+            </div>
+        }
+    }
+
     <div class="row mb-4">
         <div class="col-md-6">
             <label>Seleccionar árbol 1:</label>
@@ -46,6 +62,9 @@
             <TreeComponent Arbol="ArbolSeleccionado2" />
         </div>
     }
+
+
+
 </div>
 
 @code{
@@ -62,4 +81,33 @@
         var nuevo = new ArbolBinario();
         TodosLosArboles.Add(nuevo);
     }
+
+
+    //Comparaciones
+    private string resultadoComparacion = "";
+
+    private void CompararSimilares()
+    {
+        if (ArbolBinario.SonSimilares(ArbolSeleccionado1.Raiz, ArbolSeleccionado2.Raiz))
+            resultadoComparacion = "✅ Los árboles son similares (estructura igual).";
+        else
+            resultadoComparacion = "❌ Los árboles NO son similares.";
+    }
+
+    private void CompararEquivalentes()
+    {
+        if (ArbolBinario.SonEquivalentes(ArbolSeleccionado1.Raiz, ArbolSeleccionado2.Raiz))
+            resultadoComparacion = "✅ Los árboles son equivalentes (estructura y datos iguales).";
+        else
+            resultadoComparacion = "❌ Los árboles NO son equivalentes.";
+    }
+
+    private void CompararDistintos()
+    {
+        if (ArbolBinario.SonDistintos(ArbolSeleccionado1.Raiz, ArbolSeleccionado2.Raiz))
+            resultadoComparacion = "✅ Los árboles son distintos (estructura o datos diferentes).";
+        else
+            resultadoComparacion = "❌ Los árboles NO son distintos.";
+    }
+
 }
