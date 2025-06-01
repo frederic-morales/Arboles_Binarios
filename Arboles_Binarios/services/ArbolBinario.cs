@@ -82,5 +82,185 @@ namespace Arboles_Binarios.services
             else
                 return BuscarRecursivo(nodo.Derecha, edad);
         }
+
+
+        //---------------------
+        // METODOS DE SALIDA
+        //---------------------
+
+
+        //Obtener los nodos hijos de un nodo x por su edad
+        public List<NodoArbol> ObtenerHijos(int edad)
+        {
+            var nodo = Buscar(edad);
+            var hijos = new List<NodoArbol>();
+            if (nodo?.Izquierda != null) hijos.Add(nodo.Izquierda);
+            if (nodo?.Derecha != null) hijos.Add(nodo.Derecha);
+            return hijos;
+        }
+
+
+        //Obtener el antecesor de un nodo y
+        public NodoArbol ObtenerPadre(int edad)
+        {
+            return BuscarPadreRecursivo(Raiz, null, edad);
+        }
+        private NodoArbol BuscarPadreRecursivo(NodoArbol actual, NodoArbol padre, int edad)
+        {
+            if (actual == null) return null;
+            if (actual.Informacion.Edad == edad) return padre;
+
+            if (edad < actual.Informacion.Edad)
+                return BuscarPadreRecursivo(actual.Izquierda, actual, edad);
+            else
+                return BuscarPadreRecursivo(actual.Derecha, actual, edad);
+        }
+
+
+        //Obtener nodos interiores (con al menos un hijo)
+        public List<NodoArbol> ObtenerNodosInteriores()
+        {
+            var interiores = new List<NodoArbol>();
+            RecolectarInteriores(Raiz, interiores);
+            return interiores;
+        }
+        private void RecolectarInteriores(NodoArbol nodo, List<NodoArbol> lista)
+        {
+            if (nodo == null) return;
+
+            if (nodo.Izquierda != null || nodo.Derecha != null)
+                lista.Add(nodo);
+
+            RecolectarInteriores(nodo.Izquierda, lista);
+            RecolectarInteriores(nodo.Derecha, lista);
+        }
+
+
+        //Obtener nodos hoja
+        public List<NodoArbol> ObtenerNodosHoja()
+        {
+            var hojas = new List<NodoArbol>();
+            RecolectarHojas(Raiz, hojas);
+            return hojas;
+        }
+        private void RecolectarHojas(NodoArbol nodo, List<NodoArbol> lista)
+        {
+            if (nodo == null) return;
+
+            if (nodo.Izquierda == null && nodo.Derecha == null)
+                lista.Add(nodo);
+
+            RecolectarHojas(nodo.Izquierda, lista);
+            RecolectarHojas(nodo.Derecha, lista);
+        }
+
+
+        //Obtener el grado de un nodo
+        public int GradoNodo(int edad)
+        {
+            var nodo = Buscar(edad);
+            if (nodo == null) return -1;
+
+            int grado = 0;
+            if (nodo.Izquierda != null) grado++;
+            if (nodo.Derecha != null) grado++;
+            return grado;
+        }
+
+
+        //Obtener nivel de un nodo
+        public int NivelNodo(int edad)
+        {
+            return ObtenerNivel(Raiz, edad, 0);
+        }
+        private int ObtenerNivel(NodoArbol nodo, int edad, int nivel)
+        {
+            if (nodo == null) return -1;
+            if (nodo.Informacion.Edad == edad) return nivel;
+
+            if (edad < nodo.Informacion.Edad)
+                return ObtenerNivel(nodo.Izquierda, edad, nivel + 1);
+            else
+                return ObtenerNivel(nodo.Derecha, edad, nivel + 1);
+        }
+
+
+        //Longitud de camino interno
+        public int LongitudCaminoInterno()
+        {
+            return SumarCaminoInterno(Raiz, 0);
+        }
+        private int SumarCaminoInterno(NodoArbol nodo, int nivel)
+        {
+            if (nodo == null) return 0;
+
+            // Es interior si tiene al menos un hijo
+            int suma = (nodo.Izquierda != null || nodo.Derecha != null) ? nivel : 0;
+
+            suma += SumarCaminoInterno(nodo.Izquierda, nivel + 1);
+            suma += SumarCaminoInterno(nodo.Derecha, nivel + 1);
+
+            return suma;
+        }
+
+
+        //Longitud de camino externo
+        public int LongitudCaminoExterno()
+        {
+            return SumarCaminoExterno(Raiz, 0);
+        }
+        private int SumarCaminoExterno(NodoArbol nodo, int nivel)
+        {
+            if (nodo == null) return 0;
+
+            if (nodo.Izquierda == null && nodo.Derecha == null)
+                return nivel;
+
+            return SumarCaminoExterno(nodo.Izquierda, nivel + 1) +
+                   SumarCaminoExterno(nodo.Derecha, nivel + 1);
+        }
+
+
+        //Eliminar todas las hojas del arbol
+        public void EliminarHojas()
+        {
+            Raiz = EliminarHojasRecursivo(Raiz);
+        }
+
+        private NodoArbol EliminarHojasRecursivo(NodoArbol nodo)
+        {
+            if (nodo == null) return null;
+
+            if (nodo.Izquierda == null && nodo.Derecha == null)
+                return null;
+
+            nodo.Izquierda = EliminarHojasRecursivo(nodo.Izquierda);
+            nodo.Derecha = EliminarHojasRecursivo(nodo.Derecha);
+
+            return nodo;
+        }
+
+
+
+        //Intercarbio de los valores de un arbol izquierdo y derecho
+        public void IntercambiarSubarboles()
+        {
+            IntercambiarRecursivo(Raiz);
+        }
+
+        private void IntercambiarRecursivo(NodoArbol nodo)
+        {
+            if (nodo == null) return;
+
+            // Intercambia los hijos
+            var temp = nodo.Izquierda;
+            nodo.Izquierda = nodo.Derecha;
+            nodo.Derecha = temp;
+
+            // Llama recursivamente en ambos subárboles
+            IntercambiarRecursivo(nodo.Izquierda);
+            IntercambiarRecursivo(nodo.Derecha);
+        }
+
     }
 }
